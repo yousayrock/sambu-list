@@ -15,9 +15,10 @@ h2{font-size:21px;margin:26px 0 12px}.history{border:1px solid #dce3e8;border-le
 .link{display:block;text-align:center;text-decoration:none;background:#176aa7;color:#fff;border-radius:12px;padding:13px;margin-top:18px;font-weight:800}
 .property-footer{margin-top:14px;text-align:right;color:#7a8791;font-size:12px;font-weight:700}
 .research-heading{margin:30px 0 14px;padding:14px 16px;border-radius:16px;background:#e8f2fb;border:1px solid #c7dced;color:#14557f}.research-heading b{display:block;font-size:20px}.research-heading small{display:block;margin-top:4px;color:#5f7180}.photo-placeholder{height:260px;background:linear-gradient(135deg,#eaf2f5,#dce8ed);display:flex;align-items:center;justify-content:center;text-align:center;color:#3f6475;font-weight:800;font-size:18px;padding:20px}.photo-placeholder a{color:#176aa7;text-decoration:none}
+.property-gallery{position:relative;background:#e9eef1}.gallery-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}.gallery-track::-webkit-scrollbar{display:none}.gallery-slide{flex:0 0 100%;width:100%;height:420px;object-fit:cover;scroll-snap-align:start;scroll-snap-stop:always;background:#e9eef1}.gallery-count{position:absolute;right:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:#17202bcc;color:#fff;font-size:12px;font-weight:800}.gallery-hint{position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:999px;background:#fffde8dd;color:#4c5660;font-size:12px;font-weight:800}
 .property-thumb-wrap{display:block;height:260px;background:#e9eef1;overflow:hidden}.property-thumb{width:100%;height:260px;display:block;object-fit:cover;transition:transform .2s ease}.property-thumb-wrap:hover .property-thumb{transform:scale(1.03)}
 .language-bar{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #e63946;border-radius:16px;padding:12px;margin:0 0 18px;position:sticky;top:8px;z-index:10;box-shadow:0 6px 18px #0002}.language-bar button{border:0;border-radius:999px;background:#e63946;color:#fff;padding:11px 18px;font-weight:800;font-size:15px;cursor:pointer}.language-bar button.secondary{background:#176aa7}.language-bar small{color:#687582;font-weight:700}
-@media(max-width:600px){main{padding:0 8px}h1{font-size:23px}.hero{height:300px}.pad{padding:18px 16px}.price{font-size:40px}}
+@media(max-width:600px){main{padding:0 8px}h1{font-size:23px}.hero,.gallery-slide{height:300px}.pad{padding:18px 16px}.price{font-size:40px}}
 </style>
 </head>
 <body>
@@ -28,7 +29,7 @@ h2{font-size:21px;margin:26px 0 12px}.history{border:1px solid #dce3e8;border-le
 <div class="research-heading"><b>新着物件</b><small>500万円以下・平屋・庭付き。掲載状況・現況は変動するため、問い合わせ前に再確認してください。</small></div>
 
 <section class="card">
-<div class="photo-placeholder"><a href="https://suumo.jp/chukoikkodate/chiba/sc_sambugun/nc_21063292/" target="_blank">📷 掲載元で写真・詳細を見る<br><small>外観・間取り・室内写真</small></a></div>
+<div class="property-gallery" data-gallery="shibayama" aria-label="芝山町新井田の物件写真"><div class="gallery-track" tabindex="0"></div><div class="gallery-hint">← 横にスワイプ →</div><div class="gallery-count" aria-live="polite">1 / 20</div></div>
 <div class="pad">
 <div class="price">500万円</div>
 <div class="name">芝山町新井田｜2DK・平屋・庭付き</div>
@@ -55,7 +56,7 @@ h2{font-size:21px;margin:26px 0 12px}.history{border:1px solid #dce3e8;border-le
 <div class="research-heading"><b>倉庫候補</b><small>山武郡内の売倉庫を複数サイトで横断調査。上限500万円を90万円超えるため、予算超過候補として掲載しています。</small></div>
 
 <section class="card">
-<div class="photo-placeholder"><a href="https://www.pitat.com/buyDetail/AGW0038.html" target="_blank">📷 掲載元で写真・詳細を見る<br><small>倉庫・敷地・接道の写真</small></a></div>
+<div class="property-gallery" data-gallery="warehouse" aria-label="九十九里町小関の倉庫写真"><div class="gallery-track" tabindex="0"></div><div class="gallery-hint">← 横にスワイプ →</div><div class="gallery-count" aria-live="polite">1 / 18</div></div>
 <div class="pad">
 <div class="price">590万円</div>
 <div class="name">九十九里町小関｜鉄骨平屋倉庫・コンテナ付き</div>
@@ -739,6 +740,42 @@ h2{font-size:21px;margin:26px 0 12px}.history{border:1px solid #dce3e8;border-le
   const originals = new WeakMap();
   const button = document.getElementById("translateButton");
   const hint = document.getElementById("languageHint");
+  const galleryData = {
+    shibayama: Array.from({length: 20}, (_, index) => {
+      const number = String(index + 1).padStart(4, "0");
+      return `https://img01.suumo.com/jj/resizeImage?src=gazo%2Fbukken%2F030%2FN010000%2Fimg%2F292%2F21063292%2F21063292_${number}.jpg&w=900&h=675`;
+    }),
+    warehouse: Array.from({length: 18}, (_, index) => {
+      const number = index + 1;
+      return `https://img.pitat.com/imageconvert/cvt2/101160/sale/101160_200038_200038_${number}.jpg?id=293d70735d`;
+    })
+  };
+
+  document.querySelectorAll(".property-gallery").forEach((gallery) => {
+    const images = galleryData[gallery.dataset.gallery] || [];
+    const track = gallery.querySelector(".gallery-track");
+    const count = gallery.querySelector(".gallery-count");
+    const propertyName = gallery.getAttribute("aria-label");
+
+    images.forEach((source, index) => {
+      const image = document.createElement("img");
+      image.className = "gallery-slide";
+      image.src = source;
+      image.alt = `${propertyName} ${index + 1}枚目`;
+      image.loading = index === 0 ? "eager" : "lazy";
+      image.referrerPolicy = "no-referrer";
+      track.appendChild(image);
+    });
+
+    let frame;
+    track.addEventListener("scroll", () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const current = Math.round(track.scrollLeft / track.clientWidth) + 1;
+        count.textContent = `${Math.min(current, images.length)} / ${images.length}`;
+      });
+    }, {passive: true});
+  });
 
   function textNodes() {
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
